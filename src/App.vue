@@ -1,13 +1,15 @@
 <template>
-	<header>
-		<h1>Jebong's TodoList!</h1>
-	</header>
-	<main>
-		<TodoInput :item="todoText" @input="updateTodoText" @add="addTodoItem" />
-	</main>
-	<div>
-		<ul>
-			<TodoListItem
+	<Header />
+	<Input
+		:item="todoText"
+		:showModal="showModal"
+		@modal="closeShowModal"
+		@input="updateTodoText"
+		@add="addTodoItem"
+	/>
+	<section class="container items">
+		<TransitionGroup name="list" tag="ul" class="list-group">
+			<List
 				v-for="(todoItem, index) in todoItems"
 				:key="index"
 				:index="index"
@@ -15,43 +17,36 @@
 				@toggle="toggleTodoItme"
 				@remove="removeTodoItem"
 			/>
-		</ul>
-	</div>
+		</TransitionGroup>
+	</section>
+	<Delete @clear="removeAllTodoItem" />
+	<Footer />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import TodoInput from '@/components/TodoInput.vue'
-import TodoListItem from '@/components/TodoListItem.vue'
-
-const STORAGE_KEY = 'todo-items'
-const storage = {
-	save(todoItems: TodoItem[]) {
-		const parsed = JSON.stringify(todoItems)
-		localStorage.setItem(STORAGE_KEY, parsed)
-	},
-	fetch(): TodoItem[] {
-		const todoItems = localStorage.getItem(STORAGE_KEY) || '[]'
-		const res = JSON.parse(todoItems)
-		return res
-	}
-}
-
-export interface TodoItem {
-	title: string
-	complete: boolean
-}
+import { save, fetch, clear } from '@/api/index'
+import { TodoItem } from '@/api/interface'
+import Header from '@/components/Header.vue'
+import Input from '@/components/Input.vue'
+import List from '@/components/List.vue'
+import Delete from '@/components/Delete.vue'
+import Footer from '@/components/Footer.vue'
 
 export default defineComponent({
 	components: {
-		TodoInput,
-		TodoListItem
+		Header,
+		Input,
+		List,
+		Delete,
+		Footer
 	},
 
 	data() {
 		return {
 			todoText: '',
-			todoItems: [] as TodoItem[]
+			todoItems: [] as TodoItem[],
+			showModal: false
 		}
 	},
 
@@ -60,19 +55,23 @@ export default defineComponent({
 			this.todoText = value
 		},
 		addTodoItem() {
-			const value = this.todoText
-			this.todoItems.push({
-				title: value,
-				complete: false
-			})
-			storage.save(this.todoItems)
-			this.initTodoText()
+			if (this.todoText !== '') {
+				const value = this.todoText
+				this.todoItems.push({
+					title: value,
+					complete: false
+				})
+				save(this.todoItems)
+				this.initTodoText()
+			} else {
+				this.showModal = !this.showModal
+			}
 		},
 		initTodoText() {
 			this.todoText = ''
 		},
 		fetchTodoItems() {
-			this.todoItems = storage.fetch().sort((a, b) => {
+			this.todoItems = fetch().sort((a, b) => {
 				if (a.title < b.title) {
 					return -1
 				}
@@ -82,16 +81,23 @@ export default defineComponent({
 				return 0
 			})
 		},
+		closeShowModal() {
+			this.showModal = false
+		},
 		toggleTodoItme(todoItem: TodoItem, index: number) {
 			this.todoItems.splice(index, 1, {
 				...todoItem,
 				complete: !todoItem.complete
 			})
-			storage.save(this.todoItems) // 삭제 후, 갱신
+			save(this.todoItems) // 삭제 후, 갱신
 		},
 		removeTodoItem(index: number) {
 			this.todoItems.splice(index, 1)
-			storage.save(this.todoItems)
+			save(this.todoItems)
+		},
+		removeAllTodoItem() {
+			clear()
+			this.todoItems = []
 		}
 	},
 
@@ -101,4 +107,28 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+body {
+	text-align: center;
+	background-color: $gray-300;
+}
+
+.items {
+	margin-top: 3%;
+	.list-group {
+		position: relative;
+	}
+}
+
+/*리스트 트렌지션*/
+.list-enter-active,
+.list-leave-active {
+	transition: all 0.5s ease;
+}
+
+.list-enter-from,
+.list-leave-to {
+	opacity: 0;
+	transform: translateY(10px);
+}
+</style>
