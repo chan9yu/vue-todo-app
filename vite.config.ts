@@ -1,7 +1,23 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import vue from '@vitejs/plugin-vue';
+import autoprefixer from 'autoprefixer';
+import { UserConfig, defineConfig } from 'vite';
 
-// https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [vue()],
-})
+const config = <UserConfig>defineConfig({
+	plugins: [vue()],
+	server: {
+		host: 'localhost',
+		port: 3050
+	},
+	css: {
+		preprocessorOptions: {
+			scss: {
+				additionalData: `@import "./src/styles/index.scss";`
+			}
+		},
+		postcss: {
+			plugins: [autoprefixer()]
+		}
+	}
+});
+
+export default config;
