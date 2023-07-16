@@ -12,7 +12,7 @@ const config = <UserConfig>defineConfig({
 	css: {
 		preprocessorOptions: {
 			scss: {
-				additionalData: `@import "./src/styles/index.scss";`
+				additionalData: `@use "./src/styles/global.scss" as *;`
 			}
 		},
 		postcss: {
