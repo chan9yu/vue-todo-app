@@ -2,7 +2,7 @@
 	<div>
 		<label for="todo-input">Todo: </label>
 		<input id="todo-input" type="text" v-model="todoItem" />
-		<button @click="handleAddTodoItem" type="button">ADD</button>
+		<button @click="handleAddClick" type="button">ADD</button>
 	</div>
 </template>
 
@@ -19,8 +19,8 @@ export default {
 			this.todoItem = '';
 		},
 
-		handleAddTodoItem() {
-			localStorage.setItem(this.todoItem, this.todoItem);
+		handleAddClick() {
+			this.$emit('add', this.todoItem);
 			this.initTodoText();
 		}
 	}
