@@ -1,9 +1,9 @@
 <template>
-	<div>footer</div>
+	<footer>footer</footer>
 </template>
 
 <script lang="ts">
 export default {};
 </script>
 
-<style lang=""></style>
+<style lang="scss" scoped></style>

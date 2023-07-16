@@ -25,23 +25,17 @@ export default {
 	},
 
 	methods: {
-		getTodoItems() {
-			return todoStorage.getTodos();
+		getTodoList() {
+			this.todoList = todoStorage.getTodos().sort((a, b) => a.title.localeCompare(b.title));
 		},
 
 		handleAddTodoItem(item: string) {
-			this.todoList.push({
-				done: false,
-				title: item
-			});
+			this.todoList.push({ done: false, title: item });
 			todoStorage.saveTodo(this.todoList);
 		},
 
 		handleToggleTodoItem(todoItem: Todo, index: number) {
-			this.todoList.splice(index, 1, {
-				...todoItem,
-				done: !todoItem.done
-			});
+			this.todoList.splice(index, 1, { ...todoItem, done: !todoItem.done });
 			todoStorage.saveTodo(this.todoList);
 		},
 
@@ -52,9 +46,9 @@ export default {
 	},
 
 	created() {
-		this.todoList = this.getTodoItems();
+		this.getTodoList();
 	}
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss" scoped></style>
