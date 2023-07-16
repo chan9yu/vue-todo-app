@@ -2,45 +2,30 @@
 	<main>
 		<ul>
 			<TodoItem
-				v-for="(todoItem, index) in todoList"
+				v-for="(todoItem, index) in props.todoList"
 				:key="index"
 				:todoItem="todoItem"
 				:index="index"
-				@toggle="handleToggleTodoItem"
-				@delete="handleDeleteTodoItem"
+				@toggle="handleToggleItem"
+				@delete="handleDeleteItem"
 			/>
 		</ul>
 	</main>
 </template>
 
-<script lang="ts">
-import type { PropType } from 'vue';
-
+<script setup lang="ts">
 import type { Todo } from '../@types';
 import TodoItem from './TodoItem.vue';
 
-export default {
-	components: {
-		TodoItem
-	},
+interface TodoListProps {
+	todoList: Todo[];
+}
 
-	props: {
-		todoList: {
-			type: Array as PropType<Todo[]>,
-			required: true
-		}
-	},
+const props = defineProps<TodoListProps>();
+const emit = defineEmits(['toggle', 'delete']);
 
-	methods: {
-		handleToggleTodoItem(todoItem: Todo, index: number) {
-			this.$emit('toggle', todoItem, index);
-		},
-
-		handleDeleteTodoItem(index: number) {
-			this.$emit('delete', index);
-		}
-	}
-};
+const handleToggleItem = (todoItem: Todo, index: number) => emit('toggle', todoItem, index);
+const handleDeleteItem = (index: number) => emit('delete', index);
 </script>
 
 <style lang="scss" scoped></style>

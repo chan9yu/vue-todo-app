@@ -5,50 +5,35 @@
 	<TodoFooter />
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import { ref } from 'vue';
+
 import type { Todo } from './@types';
 import { TodoFooter, TodoHeader, TodoInput, TodoList } from './components';
-import { todoStorage } from './utils';
+import { todoStorage } from './services';
 
-export default {
-	components: {
-		TodoFooter,
-		TodoHeader,
-		TodoInput,
-		TodoList
-	},
+const todoList = ref<Todo[]>([]);
 
-	data() {
-		return {
-			todoList: [] as Todo[]
-		};
-	},
-
-	methods: {
-		getTodoList() {
-			this.todoList = todoStorage.getTodos().sort((a, b) => a.title.localeCompare(b.title));
-		},
-
-		handleAddTodoItem(item: string) {
-			this.todoList.push({ done: false, title: item });
-			todoStorage.saveTodo(this.todoList);
-		},
-
-		handleToggleTodoItem(todoItem: Todo, index: number) {
-			this.todoList.splice(index, 1, { ...todoItem, done: !todoItem.done });
-			todoStorage.saveTodo(this.todoList);
-		},
-
-		handleDeleteTodoItem(index: number) {
-			this.todoList.splice(index, 1);
-			todoStorage.saveTodo(this.todoList);
-		}
-	},
-
-	created() {
-		this.getTodoList();
-	}
+const fetchTodoList = () => {
+	todoList.value = todoStorage.getTodos().sort((a, b) => a.title.localeCompare(b.title));
 };
+
+const handleAddTodoItem = (item: string) => {
+	todoList.value.push({ done: false, title: item });
+	todoStorage.saveTodos(todoList.value);
+};
+
+const handleToggleTodoItem = (todoItem: Todo, index: number) => {
+	todoList.value.splice(index, 1, { ...todoItem, done: !todoItem.done });
+	todoStorage.saveTodos(todoList.value);
+};
+
+const handleDeleteTodoItem = (index: number) => {
+	todoList.value.splice(index, 1);
+	todoStorage.saveTodos(todoList.value);
+};
+
+fetchTodoList();
 </script>
 
 <style lang="scss" scoped></style>

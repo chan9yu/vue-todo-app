@@ -1,46 +1,30 @@
 <template>
 	<li>
-		<span class="item" :class="todoItemClass" @click="hadnleToggleDone">
-			{{ todoItem.title }}
+		<span :class="itemClass" @click="handleToggleDone">
+			{{ props.todoItem.title }}
 		</span>
 		&nbsp;
-		<button @click="handleDeleteClick">DELETE</button>
+		<button @click="handleDeleteItem">DELETE</button>
 	</li>
 </template>
 
-<script lang="ts">
-import type { PropType } from 'vue';
+<script setup lang="ts">
+import { computed } from 'vue';
 
 import type { Todo } from '../@types';
 
-export default {
-	props: {
-		todoItem: {
-			type: Object as PropType<Todo>,
-			required: true
-		},
-		index: {
-			type: Number,
-			required: true
-		}
-	},
+interface TodoItemProps {
+	todoItem: Todo;
+	index: number;
+}
 
-	computed: {
-		todoItemClass() {
-			return this.todoItem.done ? 'item--complete' : null;
-		}
-	},
+const props = defineProps<TodoItemProps>();
+const emit = defineEmits(['toggle', 'delete']);
 
-	methods: {
-		hadnleToggleDone() {
-			this.$emit('toggle', this.todoItem, this.index);
-		},
+const itemClass = computed(() => ['item', props.todoItem.done ? 'item--complete' : '']);
 
-		handleDeleteClick() {
-			this.$emit('delete', this.index);
-		}
-	}
-};
+const handleToggleDone = () => emit('toggle', props.todoItem, props.index);
+const handleDeleteItem = () => emit('delete', props.index);
 </script>
 
 <style lang="scss" scoped>

@@ -2,28 +2,23 @@
 	<div>
 		<label for="todo-input">Todo: </label>
 		<input id="todo-input" type="text" v-model="todoItem" />
-		<button @click="handleAddClick" type="button">ADD</button>
+		<button @click="handleAddTodo" type="button">ADD</button>
 	</div>
 </template>
 
-<script lang="ts">
-export default {
-	data() {
-		return {
-			todoItem: ''
-		};
-	},
+<script setup lang="ts">
+import { ref } from 'vue';
 
-	methods: {
-		initTodoText() {
-			this.todoItem = '';
-		},
+const todoItem = ref('');
+const emit = defineEmits(['add']);
 
-		handleAddClick() {
-			this.$emit('add', this.todoItem);
-			this.initTodoText();
-		}
-	}
+const handleAddTodo = () => {
+	emit('add', todoItem.value);
+	clearTodoInput();
+};
+
+const clearTodoInput = () => {
+	todoItem.value = '';
 };
 </script>
 
