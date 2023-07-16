@@ -3,6 +3,7 @@
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
+	"homepage": "https://chan9yu.github.io/vue-todo-app/",
 	"lint-staged": {
 		"**/*.{ts,vue}": [
 			"eslint --fix",
@@ -18,6 +19,7 @@
 		"dev": "vite",
 		"build": "vue-tsc && vite build",
 		"preview": "vite preview",
+		"deploy": "gh-pages -d dist",
 		"commit": "pnpm git-cz",
 		"prepare": "husky install",
 		"prepare:permission": "chmod +x .husky/*"
@@ -38,6 +40,7 @@
 		"eslint-config-prettier": "^8.8.0",
 		"eslint-plugin-prettier": "^5.0.0",
 		"eslint-plugin-vue": "^9.15.1",
+		"gh-pages": "^5.0.0",
 		"husky": "^8.0.3",
 		"lint-staged": "^13.2.3",
 		"prettier": "^3.0.0",

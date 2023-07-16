@@ -4,6 +4,7 @@ import { UserConfig, defineConfig } from 'vite';
 
 const config = <UserConfig>defineConfig({
 	plugins: [vue()],
+	base: '/vue-todo-app/',
 	server: {
 		host: 'localhost',
 		port: 3050
