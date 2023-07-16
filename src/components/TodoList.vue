@@ -6,6 +6,7 @@
 				:key="index"
 				:todoItem="todoItem"
 				:index="index"
+				@toggle="handleToggleTodoItem"
 				@delete="handleDeleteTodoItem"
 			/>
 		</ul>
@@ -13,6 +14,9 @@
 </template>
 
 <script lang="ts">
+import type { PropType } from 'vue';
+
+import type { Todo } from '../@types';
 import TodoItem from './TodoItem.vue';
 
 export default {
@@ -22,12 +26,16 @@ export default {
 
 	props: {
 		todoList: {
-			type: Array as () => Array<string>,
+			type: Array as PropType<Todo[]>,
 			required: true
 		}
 	},
 
 	methods: {
+		handleToggleTodoItem(todoItem: Todo, index: number) {
+			this.$emit('toggle', todoItem, index);
+		},
+
 		handleDeleteTodoItem(index: number) {
 			this.$emit('delete', index);
 		}

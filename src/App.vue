@@ -1,11 +1,12 @@
 <template>
 	<TodoHeader />
 	<TodoInput @add="handleAddTodoItem" />
-	<TodoList :todoList="todoList" @delete="handleRemoveTodoItem" />
+	<TodoList :todoList="todoList" @toggle="handleToggleTodoItem" @delete="handleDeleteTodoItem" />
 	<TodoFooter />
 </template>
 
 <script lang="ts">
+import type { Todo } from './@types';
 import { TodoFooter, TodoHeader, TodoInput, TodoList } from './components';
 import { todoStorage } from './utils';
 
@@ -19,8 +20,7 @@ export default {
 
 	data() {
 		return {
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			todoList: [] as any[]
+			todoList: [] as Todo[]
 		};
 	},
 
@@ -30,11 +30,22 @@ export default {
 		},
 
 		handleAddTodoItem(item: string) {
-			this.todoList.push(item);
+			this.todoList.push({
+				done: false,
+				title: item
+			});
 			todoStorage.saveTodo(this.todoList);
 		},
 
-		handleRemoveTodoItem(index: number) {
+		handleToggleTodoItem(todoItem: Todo, index: number) {
+			this.todoList.splice(index, 1, {
+				...todoItem,
+				done: !todoItem.done
+			});
+			todoStorage.saveTodo(this.todoList);
+		},
+
+		handleDeleteTodoItem(index: number) {
 			this.todoList.splice(index, 1);
 			todoStorage.saveTodo(this.todoList);
 		}
