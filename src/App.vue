@@ -1,12 +1,22 @@
 <template>
-	<div class="test">TEST</div>
-	<div>
-		<HelloWorld msg="Vite + Vue" />
-	</div>
+	<TodoHeader />
+	<TodoInput />
+	<TodoList />
+	<TodoFooter />
+	<div class="test"></div>
 </template>
 
-<script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue';
+<script lang="ts">
+import { TodoFooter, TodoHeader, TodoInput, TodoList } from './components';
+
+export default {
+	components: {
+		TodoFooter,
+		TodoHeader,
+		TodoInput,
+		TodoList
+	}
+};
 </script>
 
-<style></style>
+<style lang="scss"></style>
