@@ -1,7 +1,7 @@
 <template>
 	<TodoHeader />
 	<TodoInput @add="handleAddTodoItem" />
-	<TodoList :todoList="todoList" />
+	<TodoList :todoList="todoList" @delete="handleRemoveTodoItem" />
 	<TodoFooter />
 </template>
 
@@ -30,15 +30,18 @@ export default {
 		},
 
 		handleAddTodoItem(item: string) {
-			console.log('### item', item);
 			this.todoList.push(item);
+			todoStorage.saveTodo(this.todoList);
+		},
+
+		handleRemoveTodoItem(index: number) {
+			this.todoList.splice(index, 1);
 			todoStorage.saveTodo(this.todoList);
 		}
 	},
 
 	created() {
 		this.todoList = this.getTodoItems();
-		console.log(this.todoList);
 	}
 };
 </script>

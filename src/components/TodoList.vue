@@ -1,7 +1,13 @@
 <template>
 	<main>
 		<ul>
-			<TodoItem v-for="(todoItem, index) in todoList" :key="index" :todoItem="todoItem" />
+			<TodoItem
+				v-for="(todoItem, index) in todoList"
+				:key="index"
+				:todoItem="todoItem"
+				:index="index"
+				@delete="handleDeleteTodoItem"
+			/>
 		</ul>
 	</main>
 </template>
@@ -10,6 +16,10 @@
 import TodoItem from './TodoItem.vue';
 
 export default {
+	components: {
+		TodoItem
+	},
+
 	props: {
 		todoList: {
 			type: Array as () => Array<string>,
@@ -17,8 +27,10 @@ export default {
 		}
 	},
 
-	components: {
-		TodoItem
+	methods: {
+		handleDeleteTodoItem(index: number) {
+			this.$emit('delete', index);
+		}
 	}
 };
 </script>
