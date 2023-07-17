@@ -1,6 +1,18 @@
-@import './colors';
+@import './variables';
 @import './font';
-@import './reset';
 
-$content-width: 800px;
-$form-height: 48px;
+* {
+	font-family: 'Pretendard' !important;
+}
+
+body {
+	background-color: $gray-600;
+	color: $gray-100;
+	font-size: 14px;
+	font-weight: 400;
+	overflow: overlay;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}

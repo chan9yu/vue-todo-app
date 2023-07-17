@@ -14,7 +14,7 @@ export const useTodoStore = defineStore('todo', {
 	},
 	actions: {
 		addTodo(content: string) {
-			if (!content) return alert('빈 값 입니다!');
+			if (!content) return alert('값은 필수입니다');
 			const newTodo: Todo = {
 				id: uuid(),
 				content,

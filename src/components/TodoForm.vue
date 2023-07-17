@@ -1,8 +1,14 @@
 <template>
 	<div class="todo-form">
-		<input type="text" class="todo-form__input" placeholder="Add a new todo" v-model="todoValue" />
+		<input
+			type="text"
+			class="todo-form__input"
+			placeholder="Add a new todo"
+			v-model="todoValue"
+			@keyup.enter="handleAddTodo"
+		/>
 		<button type="button" class="todo-form__button" @click="handleAddTodo">
-			<img :src="addIcon" alt="addIcon" />
+			<img :src="addSvg" alt="addIcon" />
 			Add
 		</button>
 	</div>
@@ -14,7 +20,7 @@ import { ref, unref } from 'vue';
 
 import { useTodoStore } from '../store';
 import { setTodosToStorage } from '../utils';
-import { addIcon } from '../assets';
+import { addSvg } from '../assets';
 
 const todoValue = ref('');
 
@@ -60,8 +66,9 @@ const handleAddTodo = () => {
 			color: $gray-300;
 		}
 
-		&:hover {
-			filter: brightness(80%);
+		&:hover,
+		&:focus {
+			box-shadow: inset 0 0 0 1px $primary-dark;
 		}
 
 		&:focus {

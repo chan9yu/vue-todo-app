@@ -1,6 +1,6 @@
 <template>
 	<h1 class="todo-header">
-		<img class="todo-header__img" :src="stickyNotesImg" alt="title-img" />
+		<img class="todo-header__img" :src="stickyNotesPng" alt="title-img" />
 		<div>
 			<span class="todo-header__title todo-header__title--primary-dark">To</span>
 			<span class="todo-header__title todo-header__title--primary">do</span>
@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { stickyNotesImg } from '../assets';
+import { stickyNotesPng } from '../assets';
 </script>
 
 <style lang="scss" scoped>
@@ -17,6 +17,7 @@ import { stickyNotesImg } from '../assets';
 	display: flex;
 	align-items: center;
 	gap: 12px;
+	position: relative;
 
 	&__img {
 		width: 48px;

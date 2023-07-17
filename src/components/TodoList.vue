@@ -28,13 +28,13 @@ fetchTodoList();
 .todo-list {
 	width: 80%;
 	max-width: $content-width;
-	margin-top: calc($form-height / 2);
+	margin: calc($form-height / 2) 0;
 	display: flex;
 	flex-direction: column;
 	gap: 24px;
 
 	&__wrapper {
-		width: inherit;
+		width: 100%;
 		display: flex;
 		flex-direction: column;
 		gap: 12px;

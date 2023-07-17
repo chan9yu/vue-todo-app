@@ -6,24 +6,25 @@
 		</div>
 		<TodoList />
 	</div>
+	<img
+		class="todo-app__github-icon"
+		:src="githubSvg"
+		alt="github logo"
+		@click="handleOpenRepositoryTab"
+	/>
 </template>
 
 <script setup lang="ts">
+import { repository } from '../package.json';
+import { githubSvg } from './assets';
 import { TodoForm, TodoHeader, TodoList } from './components';
+
+const handleOpenRepositoryTab = () => {
+	window.open(repository.url, '_blank');
+};
 </script>
 
 <style lang="scss">
-* {
-	font-family: 'Pretendard' !important;
-}
-
-body {
-	background-color: $gray-600;
-	color: $gray-100;
-	font-size: 14px;
-	font-weight: 400;
-}
-
 .todo-app {
 	width: inherit;
 	display: flex;
@@ -39,6 +40,20 @@ body {
 		justify-content: center;
 		align-items: center;
 		position: relative;
+	}
+
+	&__github-icon {
+		position: absolute;
+		top: 20px;
+		right: 30px;
+		width: 36px;
+		height: 36px;
+		cursor: pointer;
+		transition: 250ms ease-out;
+
+		&:hover {
+			filter: brightness(80%);
+		}
 	}
 }
 </style>
