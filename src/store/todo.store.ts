@@ -9,7 +9,8 @@ export const useTodoStore = defineStore('todo', {
 		editMode: ''
 	}),
 	getters: {
-		countTodo: state => state.todoList.length
+		countTodo: state => state.todoList.length,
+		doneCountTodo: state => state.todoList.filter(todo => todo.done).length
 	},
 	actions: {
 		addTodo(content: string) {
