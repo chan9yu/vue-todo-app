@@ -7,34 +7,40 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { v4 as uuid } from 'uuid';
 
 import type { Todo } from './@types';
 import { TodoFooter, TodoHeader, TodoInput, TodoList } from './components';
-import { getTodos, saveTodos } from './utils';
+import { getTodosFromStorage, setTodosToStorage } from './utils';
 
 const todoList = ref<Todo[]>([]);
 
 const fetchTodoList = () => {
-	todoList.value = getTodos().sort((a, b) => a.title.localeCompare(b.title));
+	todoList.value = getTodosFromStorage().sort((a, b) => a.content.localeCompare(b.content));
 };
 
-const handleAddTodoItem = (item: string) => {
-	todoList.value.push({ done: false, title: item });
-	saveTodos(todoList.value);
+const handleAddTodoItem = (content: string) => {
+	const newTodo: Todo = {
+		id: uuid(),
+		content,
+		done: false
+	};
+
+	todoList.value.push(newTodo);
+	setTodosToStorage(todoList.value);
 };
 
 const handleToggleTodoItem = (todoItem: Todo, index: number) => {
 	todoList.value.splice(index, 1, { ...todoItem, done: !todoItem.done });
-	saveTodos(todoList.value);
+	setTodosToStorage(todoList.value);
 };
 
 const handleDeleteTodoItem = (index: number) => {
 	todoList.value.splice(index, 1);
-	saveTodos(todoList.value);
+	setTodosToStorage(todoList.value);
 };
 
 fetchTodoList();
 </script>
 
 <style lang="scss" scoped></style>
-./utils

@@ -1,7 +1,7 @@
 <template>
 	<li>
 		<span :class="itemClass" @click="handleToggleDone">
-			{{ props.todoItem.title }}
+			{{ props.todoItem.content }}
 		</span>
 		&nbsp;
 		<button @click="handleDeleteItem">DELETE</button>

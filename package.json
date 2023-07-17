@@ -25,11 +25,13 @@
 		"prepare:permission": "chmod +x .husky/*"
 	},
 	"dependencies": {
+		"uuid": "^9.0.0",
 		"vue": "^3.3.4"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^17.6.6",
 		"@commitlint/config-conventional": "^17.6.6",
+		"@types/uuid": "^9.0.2",
 		"@typescript-eslint/eslint-plugin": "^6.0.0",
 		"@typescript-eslint/parser": "^6.0.0",
 		"@vitejs/plugin-vue": "^4.2.3",
