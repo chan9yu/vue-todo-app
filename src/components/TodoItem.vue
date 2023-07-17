@@ -1,7 +1,7 @@
 <template>
 	<li>
 		<span :class="itemClass" @click="handleToggleDone">
-			{{ props.todoItem.content }}
+			{{ todoItem.content }}
 		</span>
 		&nbsp;
 		<button @click="handleDeleteItem">DELETE</button>
@@ -9,22 +9,31 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, toRefs, unref } from 'vue';
+import { storeToRefs } from 'pinia';
 
 import type { Todo } from '../@types';
+import { useTodoStore } from '../store';
+import { setTodosToStorage } from '../utils';
 
-interface TodoItemProps {
-	todoItem: Todo;
-	index: number;
-}
+const props = defineProps<{ todoItem: Todo }>();
+const { todoItem } = toRefs(props);
 
-const props = defineProps<TodoItemProps>();
-const emit = defineEmits(['toggle', 'delete']);
+const todoStore = useTodoStore();
+const { checkTodo, removeTodo } = todoStore;
+const { todoList } = storeToRefs(todoStore);
 
-const itemClass = computed(() => ['item', props.todoItem.done ? 'item--complete' : '']);
+const itemClass = computed(() => ['item', todoItem.value.done ? 'item--complete' : '']);
 
-const handleToggleDone = () => emit('toggle', props.todoItem, props.index);
-const handleDeleteItem = () => emit('delete', props.index);
+const handleToggleDone = () => {
+	checkTodo(todoItem.value.id);
+	setTodosToStorage(unref(todoList));
+};
+
+const handleDeleteItem = () => {
+	removeTodo(todoItem.value.id);
+	setTodosToStorage(unref(todoList));
+};
 </script>
 
 <style lang="scss" scoped>

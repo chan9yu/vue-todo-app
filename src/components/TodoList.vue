@@ -1,31 +1,26 @@
 <template>
 	<main>
 		<ul>
-			<TodoItem
-				v-for="(todoItem, index) in props.todoList"
-				:key="index"
-				:todoItem="todoItem"
-				:index="index"
-				@toggle="handleToggleItem"
-				@delete="handleDeleteItem"
-			/>
+			<TodoItem v-for="todoItem in todoList" :key="todoItem.id" :todoItem="todoItem" />
 		</ul>
 	</main>
 </template>
 
 <script setup lang="ts">
-import type { Todo } from '../@types';
+import { storeToRefs } from 'pinia';
+
+import { useTodoStore } from '../store';
+import { getTodosFromStorage } from '../utils';
 import TodoItem from './TodoItem.vue';
 
-interface TodoListProps {
-	todoList: Todo[];
-}
+const todoStore = useTodoStore();
+const { todoList } = storeToRefs(todoStore);
 
-const props = defineProps<TodoListProps>();
-const emit = defineEmits(['toggle', 'delete']);
+const fetchTodoList = () => {
+	todoList.value = getTodosFromStorage();
+};
 
-const handleToggleItem = (todoItem: Todo, index: number) => emit('toggle', todoItem, index);
-const handleDeleteItem = (index: number) => emit('delete', index);
+fetchTodoList();
 </script>
 
 <style lang="scss" scoped></style>

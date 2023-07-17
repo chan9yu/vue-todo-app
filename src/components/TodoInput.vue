@@ -1,24 +1,32 @@
 <template>
 	<div>
 		<label for="todo-input">Todo: </label>
-		<input id="todo-input" type="text" v-model="todoItem" />
+		<input id="todo-input" type="text" v-model="todoValue" />
 		<button @click="handleAddTodo" type="button">ADD</button>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { ref, unref } from 'vue';
 
-const todoItem = ref('');
-const emit = defineEmits(['add']);
+import { useTodoStore } from '../store';
+import { setTodosToStorage } from '../utils';
 
-const handleAddTodo = () => {
-	emit('add', todoItem.value);
-	clearTodoInput();
-};
+const todoValue = ref('');
+
+const todoStore = useTodoStore();
+const { addTodo } = todoStore;
+const { todoList } = storeToRefs(todoStore);
 
 const clearTodoInput = () => {
-	todoItem.value = '';
+	todoValue.value = '';
+};
+
+const handleAddTodo = () => {
+	addTodo(unref(todoValue));
+	setTodosToStorage(unref(todoList));
+	clearTodoInput();
 };
 </script>
 
