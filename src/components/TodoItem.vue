@@ -1,6 +1,9 @@
 <template>
 	<li class="todo-item">
+		<!-- doen check box -->
 		<img class="todo-item__icon" :src="itemCheckbtnSrc" @click="handleToggleDone" />
+
+		<!-- todo contents -->
 		<input
 			v-if="editMode === todoItem.id"
 			class="todo-item__edit-input"
@@ -11,6 +14,8 @@
 		<span v-else :class="itemContentClass">
 			{{ todoItem.content }}
 		</span>
+
+		<!-- edit and delete icon -->
 		<div class="todo-item__icon-group">
 			<img
 				v-if="editMode === todoItem.id"
@@ -24,7 +29,7 @@
 				class="todo-item__icon"
 				:src="editSvg"
 				alt="edit"
-				@click="hadnleChangeTodoEditMode"
+				@click="handleChangeTodoEditMode"
 			/>
 			<img class="todo-item__icon" :src="deleteSvg" alt="delete" @click="handleDeleteItem" />
 		</div>
@@ -60,13 +65,13 @@ const handleToggleDone = () => {
 };
 
 const handleEditTodo = () => {
-	if (!todoItem.value.content) return alert('값은 필수입니다');
+	if (!todoItem.value.content) return alert('Todo 내용을 입력해 주세요');
 	editTodo(unref(todoItem));
 	closeTodoEditMode();
 	setTodosToStorage(unref(todoList));
 };
 
-const hadnleChangeTodoEditMode = () => {
+const handleChangeTodoEditMode = () => {
 	changeTodoEditMode(todoItem.value.id);
 };
 
@@ -107,6 +112,7 @@ const handleDeleteItem = () => {
 		font-size: 14px;
 		font-style: normal;
 		font-weight: 400;
+		word-break: break-all;
 
 		&--done {
 			text-decoration: line-through;

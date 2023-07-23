@@ -9,7 +9,7 @@
 		/>
 		<button type="button" class="todo-form__button" @click="handleAddTodo">
 			<img :src="addSvg" alt="addIcon" />
-			Add
+			ADD
 		</button>
 	</div>
 </template>
@@ -33,6 +33,8 @@ const clearTodoInput = () => {
 };
 
 const handleAddTodo = () => {
+	console.log('### TEST');
+	if (!unref(todoValue)) return alert('Todo 내용을 입력해 주세요');
 	addTodo(unref(todoValue));
 	setTodosToStorage(unref(todoList));
 	clearTodoInput();
