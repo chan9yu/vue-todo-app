@@ -1,11 +1,11 @@
 <template>
-	<h1 class="todo-header">
+	<header class="todo-header">
 		<img class="todo-header__img" :src="stickyNotesPng" alt="title-img" />
-		<div>
+		<h1>
 			<span class="todo-header__title todo-header__title--primary-dark">To</span>
 			<span class="todo-header__title todo-header__title--primary">do</span>
-		</div>
-	</h1>
+		</h1>
+	</header>
 </template>
 
 <script setup lang="ts">
