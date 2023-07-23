@@ -10,7 +10,7 @@ const config = <UserConfig>defineConfig({
 	base: '/vue-todo-app/',
 	server: {
 		host: 'localhost',
-		port: 3051
+		port: 3050
 	},
 	css: {
 		preprocessorOptions: {
